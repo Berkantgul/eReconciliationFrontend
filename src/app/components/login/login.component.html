@@ -70,6 +70,11 @@
                     Henüz bir hesabınız yok mu?
                     <a href="/register" class="text-primary text-gradient font-weight-bold">Kayıt olun</a>
                   </p>
+
+                  <p class="mt-4 text-sm text-center">
+                    <a class="text-primary text-gradient font-weight-bold" data-bs-toggle="modal"
+                      data-bs-target="#example1Modal">Şifremi unuttum</a>
+                  </p>
                 </form>
               </div>
             </div>
@@ -135,24 +140,51 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Onay maili gönder</h5>
-          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Onay maili gönder</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Onay maili için email giriniz..</p>
+        <div [class]="styleInputChange(confirmEmail)">
+          <label class="form-label">Email</label>
+          <input type="email" [(ngModel)]="confirmEmail" [ngModelOptions]="{ standalone: true }" class="form-control">
         </div>
-        <div class="modal-body">
-          <p>Onay maili için email giriniz..</p>
-          <div [class]="styleInputChange(confirmEmail)">
-            <label class="form-label">Email</label>
-            <input type="email" [(ngModel)]="confirmEmail"  [ngModelOptions]="{ standalone: true }" class="form-control">
-          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="sendEmailConfirm()"
+          data-bs-dismiss="modal">Gönder</button>
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="example1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Onay maili gönder</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Şifrenizi değiştirmek istediğiniz mailinizi giriniz..</p>
+        <div [class]="styleInputChange(confirmEmail)">
+          <label class="form-label">Email</label>
+          <input type="email" [(ngModel)]="confirmEmail" [ngModelOptions]="{ standalone: true }" class="form-control">
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn bg-gradient-info" (click)="sendEmailConfirm()"
-            data-bs-dismiss="modal">Gönder</button>
-          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Kapat</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="sendForgotPasswordEmail()"
+          data-bs-dismiss="modal">Gönder</button>
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Kapat</button>
+      </div>
     </div>
   </div>
 </div>

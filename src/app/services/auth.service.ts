@@ -6,6 +6,7 @@ import { LoginModel } from '../models/loginModel';
 import { RegisterDto } from '../models/dtos/registerDto';
 import { TermsAndConditions } from '../models/termsAndConditions';
 import { ResponseModel } from '../models/responseModel';
+import { ChangePasswordDto } from '../models/dtos/changePasswordDto';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +50,20 @@ export class AuthService {
   confirmUser(value: string) {
     let api = "https://localhost:7127/api/auth/confirmuser?value=" + value;
     return this.httpClient.get<ResponseModel>(api);
+  }
+
+  sendForgotPasswordEmail(email: string) {
+    let api = "https://localhost:7127/api/auth/forgotPassword?email=" + email;
+    return this.httpClient.get<ResponseModel>(api);
+  }
+
+  forgotPasswordLinkCheck(value: string) {
+    let api = "https://localhost:7127/api/auth/forgotPasswordLinkCheck?value=" + value;
+    return this.httpClient.get(api);
+  }
+
+  changePasswordToForgotPassword(changePasswordDto: ChangePasswordDto) {
+    let api = "https://localhost:7127/api/auth/ChangePasswordToForgotPassword";
+    return this.httpClient.post<ResponseModel>(api,changePasswordDto);
   }
 }

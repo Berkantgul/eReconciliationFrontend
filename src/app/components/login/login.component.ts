@@ -80,6 +80,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  sendForgotPasswordEmail(){
+    if (this.confirmEmail != "") {
+      this.authService.sendForgotPasswordEmail(this.confirmEmail).subscribe((res) => {
+        this.toastr.success(res.message, "Hata!");
+      }, (err) => {
+        this.toastr.error(err.error, "Hata!")
+      })
+    }
+    else {
+      this.toastr.warning("Email alanı boş geçilemez", "Uyarı!");
+    }
+  }
+
   
+
 
 }

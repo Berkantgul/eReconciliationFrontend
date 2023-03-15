@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { DatePipe } from '@angular/common';
 import { ConfirmComponent } from './components/register/confirm/confirm.component';
+import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ConfirmComponent } from './components/register/confirm/confirm.componen
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
