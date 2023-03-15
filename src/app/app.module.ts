@@ -4,17 +4,22 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DatePipe } from '@angular/common';
+import { ConfirmComponent } from './components/register/confirm/confirm.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -25,9 +30,12 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot({
       progressBar: true,
       timeOut: 3000
-    })
+    }),
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    [DatePipe]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
