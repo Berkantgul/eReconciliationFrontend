@@ -1,0 +1,95 @@
+<div class="sidenav-header">
+  <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+    aria-hidden="true" id="iconSidenav"></i>
+  <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
+    target="_blank">
+    <img src="/../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+    <span class="ms-1 font-weight-bold text-white"> {{name}}</span>
+  </a>
+</div>
+<hr class="horizontal light mt-0 mb-2">
+<div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+  <ul class="navbar-nav">
+    <!-- Home -->
+    <li class="nav-item">
+      <a class="nav-link text-white active bg-gradient-primary" href="#">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">home</i>
+        </div>
+        <span class="nav-link-text ms-1">Anasayfa</span>
+      </a>
+    </li>
+    <!-- Cari Mutabakatlar -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="#">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">description</i>
+        </div>
+        <span class="nav-link-text ms-1">Cari Mutabakatlar</span>
+      </a>
+    </li>
+    <!-- Ba-Bs Mutabakatlar -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/billing.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">library_books</i>
+        </div>
+        <span class="nav-link-text ms-1">Ba-Bs Mutabakatlar</span>
+      </a>
+    </li>
+    <li class="nav-item mt-3">
+      <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Kayıtlar</h6>
+    </li>
+    <!-- Cariler -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/profile.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">trending_up</i>
+        </div>
+        <span class="nav-link-text ms-1">Cariler</span>
+      </a>
+    </li>
+    <!-- Kullanıcılar -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/sign-in.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">perm_identity</i>
+        </div>
+        <span class="nav-link-text ms-1">Kullanıcılar</span>
+      </a>
+    </li>
+    <!-- Şirketler -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/sign-up.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">work</i>
+        </div>
+        <span class="nav-link-text ms-1">Şirketler</span>
+      </a>
+    </li>
+    <!-- Mail Parametreleri -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/sign-up.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">alternate_email</i>
+        </div>
+        <span class="nav-link-text ms-1">Mail Parametreleri</span>
+      </a>
+    </li>
+    <!-- Mail Şablonu -->
+    <li class="nav-item">
+      <a class="nav-link text-white " href="../pages/sign-up.html">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">mail</i>
+        </div>
+        <span class="nav-link-text ms-1">Mail Şablonu</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="sidenav-footer position-absolute w-100 bottom-0 ">
+  <div class="mx-3">
+    <a class="btn bg-gradient-primary mt-4 w-100" href="#" (click)="logout()" type="button"><i
+        class="material-icons opacity-10">exit_to_app</i> Çıkış Yap</a>
+  </div>
+</div>

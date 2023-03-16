@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { TokenModel } from '../models/tokenModel';
 import { LoginModel } from '../models/loginModel';
@@ -15,16 +15,17 @@ export class AuthService {
 
   public redirectUrl: string;
   constructor(
+    @Inject('apiUrl') private apiUrl: string,
     private httpClient: HttpClient) {
   }
 
   register(registerDto: RegisterDto) {
-    let api = "https://localhost:7127/api/auth/register";
+    let api = this.apiUrl + "auth/register";
     return this.httpClient.post<SingleResponseModel<TokenModel>>(api, registerDto);
   }
 
   login(LoginModel: LoginModel) {
-    let api = "https://localhost:7127/api/auth/login";
+    let api = this.apiUrl + "auth/login";
     return this.httpClient.post<SingleResponseModel<TokenModel>>(api, LoginModel);
   }
 
@@ -38,32 +39,32 @@ export class AuthService {
   }
 
   getTermsAndConditions() {
-    let api = "https://localhost:7127/api/termsandcondition/get";
+    let api = this.apiUrl + "termsandcondition/get";
     return this.httpClient.get<SingleResponseModel<TermsAndConditions>>(api);
   }
 
   sendEmailConfirm(email: string) {
-    let api = "https://localhost:7127/api/auth/SendConfirmEmail?email=" + email;
+    let api = this.apiUrl + "auth/SendConfirmEmail?email=" + email;
     return this.httpClient.get<ResponseModel>(api);
   }
 
   confirmUser(value: string) {
-    let api = "https://localhost:7127/api/auth/confirmuser?value=" + value;
+    let api = this.apiUrl + "auth/confirmuser?value=" + value;
     return this.httpClient.get<ResponseModel>(api);
   }
 
   sendForgotPasswordEmail(email: string) {
-    let api = "https://localhost:7127/api/auth/forgotPassword?email=" + email;
+    let api = this.apiUrl + "auth/forgotPassword?email=" + email;
     return this.httpClient.get<ResponseModel>(api);
   }
 
   forgotPasswordLinkCheck(value: string) {
-    let api = "https://localhost:7127/api/auth/forgotPasswordLinkCheck?value=" + value;
+    let api = this.apiUrl + "auth/forgotPasswordLinkCheck?value=" + value;
     return this.httpClient.get(api);
   }
 
   changePasswordToForgotPassword(changePasswordDto: ChangePasswordDto) {
-    let api = "https://localhost:7127/api/auth/ChangePasswordToForgotPassword";
-    return this.httpClient.post<ResponseModel>(api,changePasswordDto);
+    let api = this.apiUrl + "auth/ChangePasswordToForgotPassword";
+    return this.httpClient.post<ResponseModel>(api, changePasswordDto);
   }
 }
