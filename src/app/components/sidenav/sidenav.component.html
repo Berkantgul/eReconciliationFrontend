@@ -12,7 +12,7 @@
   <ul class="navbar-nav">
     <!-- Home -->
     <li class="nav-item">
-      <a class="nav-link text-white active bg-gradient-primary" href="#">
+      <a [class]="changeClass('/')" href="#">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">home</i>
         </div>
@@ -21,7 +21,7 @@
     </li>
     <!-- Cari Mutabakatlar -->
     <li class="nav-item">
-      <a class="nav-link text-white " href="#">
+      <a [class]="changeClass('')"  href="#">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">description</i>
         </div>
@@ -42,7 +42,7 @@
     </li>
     <!-- Cariler -->
     <li class="nav-item">
-      <a class="nav-link text-white " href="../pages/profile.html">
+      <a [class]="changeClass('/currency-account')" href="/currency-account">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">trending_up</i>
         </div>

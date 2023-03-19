@@ -1,0 +1,323 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
+<aside
+  class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+  id="sidenav-main">
+  <app-sidenav></app-sidenav>
+</aside>
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+  <app-nav></app-nav>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">{{ title }}</h6>
+              <button class="btn btn-info mx-3" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="material-icons opacity-10">person_add</i>
+                Cari Ekle
+              </button>
+              <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addFromExcelModal">
+                <i class="material-icons opacity-10">file_upload</i>
+                Excelden cari yükle
+              </button>
+            </div>
+          </div>
+          <div class="form-control">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="card-body" style="width: 50%; margin-right: 50%">
+                  <div class="input-group input-group-outline is-valid my-3">
+                    <button class="btn btn-info" (click)="exportExcel()">
+                      <i class="fa fa-file-excel fa-lg"></i>
+                      Tabloyu excele aktar
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked [ngModel]="allList"
+                    (change)="getListByCheck('allList')">
+                  <label class="form-check-label mb-0 ms-2" for="rememberMe">Tümü</label>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="activeList" [ngModel]="activeList"
+                    (change)="getListByCheck('activeList')">
+                  <label class="form-check-label mb-0 ms-2" for="activeList">Aktif</label>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="passiveList" [ngModel]="passiveList"
+                    (change)="getListByCheck('passiveList')">
+                  <label class="form-check-label mb-0 ms-2" for="passiveList">Pasif</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body" style="width: 70%; margin-left: 30%">
+                  <div class="input-group input-group-outline is-valid my-3">
+                    <label class="form-label">Aranacak kelimeyi girin</label>
+                    <input type="text" autocomplete="false" [(ngModel)]="searchString" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0" id="excel-table">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Cari Ad/ Cari Kod / Adres
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Vergi Dairesi / V.Numarası / T.C No
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Mail
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Yetkili Kişi
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Kayıt Tarihi / Durumu
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      İşlemler
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="
+                      let currencyAccount of currencyAccounts
+                        | currencyAccountPipe : searchString
+                        | currencyAccountFilterPipe: filterText
+                    ">
+                    <td class="text-sm">
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">
+                            {{ currencyAccount.name }}
+                          </h6>
+                          <p class="text-xs text-secondary mb-0">
+                            {{ currencyAccount.code }}
+                          </p>
+                          <p class="text-xs text-secondary mb-0">
+                            {{ currencyAccount.address }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-sm align-middle">
+                      <h6 class="mb-0 text-sm">
+                        <i class="text-danger">V.Dairesi: </i>{{ currencyAccount.taxDepartment }}
+                      </h6>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="text-danger">V.Numarası: </i>{{ currencyAccount.taxIdNumber }}
+                      </p>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="text-danger">T.C no: </i>{{ currencyAccount.identityNumber }}
+                      </p>
+                    </td>
+                    <td class="text-sm">
+                      <h6 class="mb-0 text-sm">{{ currencyAccount.email }}</h6>
+                    </td>
+                    <td class="align-middle text-sm">
+                      <span class="text-secondary">{{
+                        currencyAccount.authorized
+                        }}</span>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <div class="d-flex px-2 py-1 text-sm">
+                        <div class="d-flex flex-column justify-content-center">
+                          <p class="text-xs text-secondary mb-0">
+                            <strong><i class="text-danger">K.Tarihi: </i></strong>{{ currencyAccount.addedAt | date :
+                            "dd.MM.yyyy" }}
+                          </p>
+                          <p class="text-xs text-secondary mb-0">
+                            <strong><i class="text-danger">Durum: </i></strong>{{ currencyAccount.isActive ? "Aktif" :
+                            "Pasif" }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="align-middle text-sm">
+                      <button class="btn btn-warning btn-sm mx-1" title="Güncelle" (click)="getCurrencyAccount(currencyAccount.id)" data-bs-toggle="modal" data-bs-target="#updateModal">
+                        <i class="material-icons opacity-10">edit</i>
+                      </button>
+                      <button [swal]="changeStatusCa" (click)="currentCurrency(currencyAccount)"
+                        class="btn btn-secondary btn-sm mx-1" title="Durumu değiştir"
+                        (confirm)="changeStatusCurrencyAccount(currencyAccount)">
+                        <i class="material-icons opacity-10">check_box</i>
+                      </button>
+                      <button [swal]="deleteSwal" (click)="currentCurrency(currencyAccount)"
+                        class="btn btn-primary btn-sm" title="Sil" (confirm)="deleteCurrencyAccount(currencyAccount)">
+                        <i class="material-icons opacity-10">delete_outline</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<swal #deleteSwal title="Emin misiniz?" text="Silmek istediğiniz veri geri alınmaz." type="question"
+  [showCancelButton]="true" [focusCancel]="true" [swalOptions]="{confirmButtonText:'Sil'}">
+</swal>
+
+<swal #changeStatusCa title="Emin misiniz?" text="İlgili cari kaydı aktif <==> pasif yapmak istiyor musunuz?."
+  type="question" [showCancelButton]="true" [focusCancel]="true" [swalOptions]="{confirmButtonText:'Durumu değiştir'}">
+</swal>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Cari Ekle</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="addForm">
+          <div [class]="styleInputChange(code)">
+            <label class="form-label">Cari Kod</label>
+            <input type="text" formControlName="code" [(ngModel)]="code" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(name)">
+            <label class="form-label">Cari ad</label>
+            <input type="text" formControlName="name" [(ngModel)]="name" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(address)">
+            <label class="form-label">Adres</label>
+            <input type="text" formControlName="address" [(ngModel)]="address" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxDepartment)">
+            <label class="form-label">Vergi Dairesi</label>
+            <input type="text" formControlName="taxDepartment" [(ngModel)]="taxDepartment" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxIdNumber)">
+            <label class="form-label">Vergi Numarası</label>
+            <input type="text" formControlName="taxIdNumber" [(ngModel)]="taxIdNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(identityNumber)">
+            <label class="form-label">T.C.</label>
+            <input type="text" formControlName="identityNumber" [(ngModel)]="identityNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(email)">
+            <label class="form-label">Email</label>
+            <input type="text" formControlName="email" [(ngModel)]="email" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(authorized)">
+            <label class="form-label">Yetkili Kişi</label>
+            <input type="text" formControlName="authorized" [(ngModel)]="authorized" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="addCurrencyAccount()"
+          data-bs-dismiss="modal">Ekle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeModal" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Cari Ekle</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="updateForm">
+          <div [class]="styleInputChange(code)">
+            <label class="form-label">Cari Kod</label>
+            <input type="text" formControlName="code" [(ngModel)]="code" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(name)">
+            <label class="form-label">Cari ad</label>
+            <input type="text" formControlName="name" [(ngModel)]="name" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(address)">
+            <label class="form-label">Adres</label>
+            <input type="text" formControlName="address" [(ngModel)]="address" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxDepartment)">
+            <label class="form-label">Vergi Dairesi</label>
+            <input type="text" formControlName="taxDepartment" [(ngModel)]="taxDepartment" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxIdNumber)">
+            <label class="form-label">Vergi Numarası</label>
+            <input type="text" formControlName="taxIdNumber" [(ngModel)]="taxIdNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(identityNumber)">
+            <label class="form-label">T.C.</label>
+            <input type="text" formControlName="identityNumber" [(ngModel)]="identityNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(email)">
+            <label class="form-label">Email</label>
+            <input type="text" formControlName="email" [(ngModel)]="email" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(authorized)">
+            <label class="form-label">Yetkili Kişi</label>
+            <input type="text" formControlName="authorized" [(ngModel)]="authorized" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="updateCurrencyAccount()"
+          data-bs-dismiss="modal">Güncelle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeUpdateFromModal" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addFromExcelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Cari Ekle</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="file" class="form-control" id="addFromExcelFile" (change)="onChange($event)">
+        <hr>
+        <p><a href="../../../assets//file//Cariler (1).xlsx"><i>Örnek Excel dosyasını indir</i></a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="addFromExcelCurrencyAccount()"
+          data-bs-dismiss="modal">Yükle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeExcelModal" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>

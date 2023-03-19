@@ -15,6 +15,7 @@ export class SidenavComponent implements OnInit {
   isAuthenticated: boolean;
   name: string = "";
   companyName: string = "";
+  currentUrl: string = ""
 
   constructor(
     private authService: AuthService,
@@ -44,4 +45,16 @@ export class SidenavComponent implements OnInit {
     this.isAuthenticated = false;
   }
 
+  changeClass(url: string) {
+    this.currentUrl = this.router.routerState.snapshot.url;
+    if (url == this.currentUrl) {
+      return "nav-link text-white active bg-gradient-primary";
+    }
+    else {
+      return "nav-link text-white";
+    }
+  }
+
 }
+
+// nav-link text-white active bg-gradient-primary
