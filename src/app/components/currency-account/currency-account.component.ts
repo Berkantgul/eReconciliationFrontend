@@ -5,8 +5,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CurrencyAccount } from 'src/app/models/currencyAccount';
+import { UserOperationClaim } from 'src/app/models/userOperationClaimModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrencyAccountService } from 'src/app/services/currency-account.service';
+import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
 import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-currency-account',
@@ -17,13 +19,17 @@ export class CurrencyAccountComponent implements OnInit {
 
   jwtHelper: JwtHelperService = new JwtHelperService();
   currencyAccounts: CurrencyAccount[] = [];
+  userOperationClaim: UserOperationClaim[] = [];
 
   // Form
   addForm: FormGroup;
   updateForm: FormGroup;
 
   isAuthenticated: boolean;
+
   companyId: string;
+  userId: string;
+
   searchString: string;
   currencyAccount: CurrencyAccount;
   passiveList: boolean = false;
@@ -53,11 +59,13 @@ export class CurrencyAccountComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private datePipe: DatePipe,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private userOperationClaimService: UserOperationClaimService
   ) { }
 
   ngOnInit(): void {
     this.refresh();
+    this.getListUserOperationClaim();
     this.getList();
     this.createAddForm();
     this.createUpdateForm();
@@ -71,8 +79,9 @@ export class CurrencyAccountComponent implements OnInit {
       let token = localStorage.getItem("token");
       let decode = this.jwtHelper.decodeToken(token);
       let companyId = Object.keys(decode).filter(c => c.endsWith('/anonymous'))[0];
+      let userId = Object.keys(decode).filter(c => c.endsWith('/nameidentifier'))[0];
       this.companyId = decode[companyId];
-
+      this.userId = decode[userId];
     }
   }
 
@@ -281,5 +290,15 @@ export class CurrencyAccountComponent implements OnInit {
     } else {
       this.toastr.warning("Lütfen dosya türünde veri yükleyiniz");
     }
+  }
+
+  getListUserOperationClaim() {
+    this.spinner.show();
+    this.userOperationClaimService.getListDto(this.userId, this.companyId).subscribe((res) => {
+      this.spinner.hide();
+      console.log(res.data);
+    }, (err) => {
+      console.log(err.error);
+    })
   }
 }

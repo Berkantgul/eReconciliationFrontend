@@ -20,7 +20,7 @@
       </a>
     </li>
     <!-- Cari Mutabakatlar -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="accountReconciliation">
       <a [class]="changeClass('')"  href="#">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">description</i>
@@ -29,7 +29,7 @@
       </a>
     </li>
     <!-- Ba-Bs Mutabakatlar -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="baBsReconciliation">
       <a class="nav-link text-white " href="../pages/billing.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">library_books</i>
@@ -41,7 +41,7 @@
       <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Kayıtlar</h6>
     </li>
     <!-- Cariler -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="currencyAccount">
       <a [class]="changeClass('/currency-account')" href="/currency-account">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">trending_up</i>
@@ -50,7 +50,7 @@
       </a>
     </li>
     <!-- Kullanıcılar -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="user">
       <a class="nav-link text-white " href="../pages/sign-in.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">perm_identity</i>
@@ -59,7 +59,7 @@
       </a>
     </li>
     <!-- Şirketler -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="company">
       <a class="nav-link text-white " href="../pages/sign-up.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">work</i>
@@ -68,7 +68,7 @@
       </a>
     </li>
     <!-- Mail Parametreleri -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="mailParameter">
       <a class="nav-link text-white " href="../pages/sign-up.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">alternate_email</i>
@@ -77,7 +77,7 @@
       </a>
     </li>
     <!-- Mail Şablonu -->
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="mailTemplate">
       <a class="nav-link text-white " href="../pages/sign-up.html">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">mail</i>
