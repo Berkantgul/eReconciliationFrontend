@@ -85,7 +85,7 @@ export class SidenavComponent implements OnInit {
     this.spinner.show();
     this.userOperationClaimService.getListDto(this.userId, this.companyId).subscribe((res) => {
       this.userOperationClaim = res.data;
-      console.log(this.userOperationClaim);
+      // console.log(this.userOperationClaim);
       this.userOperationClaim.forEach(elemet => {
         if (elemet.operationName == "Admin") {
           this.currencyAccount = true;
@@ -119,7 +119,7 @@ export class SidenavComponent implements OnInit {
         }
       })
     }, (err) => {
-      console.log(err.error);
+      // console.log(err.error);
     })
   }
 

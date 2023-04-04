@@ -51,7 +51,7 @@
     </li>
     <!-- Kullanıcılar -->
     <li class="nav-item" *ngIf="user">
-      <a class="nav-link text-white " href="../pages/sign-in.html">
+      <a [class]="changeClass('/user')" href="/user">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">perm_identity</i>
         </div>

@@ -20,6 +20,11 @@ import { CurrencyAccountPipe } from './pipe/currency-account.pipe';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
+import { UserComponent } from './components/user/user.component';
+import { UserPipe } from './pipe/user.pipe';
+import { UserFilterPipe } from './pipe/user-filter.pipe';
+import { UserOperationClaimComponent } from './components/user/user-operation-claim/user-operation-claim.component';
+import { UserOperationClaimPipe } from './pipe/user-operation-claim.pipe';
 
 
 @NgModule({
@@ -34,7 +39,12 @@ import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
     NavComponent,
     CurrencyAccountComponent,
     CurrencyAccountPipe,
-    CurrencyAccountFilterPipe
+    CurrencyAccountFilterPipe,
+    UserComponent,
+    UserPipe,
+    UserFilterPipe,
+    UserOperationClaimComponent,
+    UserOperationClaimPipe,
   ],
   imports: [
     BrowserModule,
