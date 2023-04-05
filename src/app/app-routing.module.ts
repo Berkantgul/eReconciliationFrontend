@@ -9,11 +9,13 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserOperationClaimComponent } from './components/user/user-operation-claim/user-operation-claim.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginGuard } from './guards/login.guard';
+import { CompanyComponent } from './components/company/company.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [LoginGuard] },
   { path: 'currency-account', component: CurrencyAccountComponent, canActivate: [LoginGuard] },
   { path: 'user', component: UserComponent, canActivate: [LoginGuard] },
+  { path: 'company', component: CompanyComponent, canActivate: [LoginGuard] },
   { path: 'user-operation-claim', component: UserComponent, canActivate: [LoginGuard] },
   { path: 'user-operation-claim/:value', component: UserOperationClaimComponent, canActivate: [LoginGuard] },
   { path: 'login', component: LoginComponent },

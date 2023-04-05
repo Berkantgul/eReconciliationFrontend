@@ -1,0 +1,222 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Yükleniyor...</p>
+</ngx-spinner>
+
+<aside
+  class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+  id="sidenav-main">
+  <app-sidenav></app-sidenav>
+</aside>
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+  <app-nav></app-nav>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-warning shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">{{title}}</h6>
+              <button class="btn btn-info mx-3" data-bs-toggle="modal" data-bs-target="#companyAddModal" *ngIf="operationAdd">
+                <i class="material-icons opacity-10">person_add</i>
+                Şirket Ekle
+              </button>
+            </div>
+          </div>
+          <div class="form-group m-3">
+            <div class="row">
+              <div class="col-md-5">
+                <button type="button" class="btn btn-primary" (click)="exportExcel()">
+                  <i class="fa fa-file-excel"></i>
+                  Şirket Listesini Excel'e Aktar
+                </button>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="allList" [(ngModel)]="allList"
+                    (change)="getListByCheck('allList')">
+                  <label class="form-check-label mb-0 ms-2" for="allList"> Tümü</label>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="activeList" [(ngModel)]="activeList"
+                    (change)="getListByCheck('activeList')" checked>
+                  <label class="form-check-label mb-0 ms-2" for="activeList"> Aktif</label>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check form-switch d-flex align-items-center mb-3">
+                  <input class="form-check-input" type="checkbox" id="passiveList" [(ngModel)]="passiveList"
+                    (change)="getListByCheck('passiveList')">
+                  <label class="form-check-label mb-0 ms-2" for="passiveList"> Pasif</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group input-group-outline is-valid my-3" style="width: 60%; margin-left: 40%;">
+                  <label class="form-label">Aranacak Kelimeyi Yazın</label>
+                  <input type="text" autocomplete="off" [(ngModel)]="searchString" class="form-control">
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0" *ngIf="operationList">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Şirket Adı</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Adres</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Vergi Dairesi</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Vergi Numarası</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">T.C no</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kayıt Tarihi / Durumu</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">İşlemler</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let company of companies| companyPipe : searchString | companyFilterPipe : filterText">
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{company.name}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{company.address}}</p>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{company.taxDepartment}}</p>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{company.taxIdNumber}}</p>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{company.identityNumber}}</p>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{company.addetAt | date:'dd-MM-yyyy'}}</p>
+                      <span class="text-secondary text-xs font-weight-bold">{{company.isActive ?
+                        "Aktif":"Pasif"}}</span>
+                    </td>
+
+                    <td>
+                      <a href="javascript:;" class="btn btn-warning btn-sm mx-3" data-toggle="tooltip"
+                        data-original-title="Edit user" title="Durumu Değiştir" [swal]="changeStatusCompany"
+                        (confirm)="changeStatus(company)">
+                        <i class="material-icons opacity-10">check_box</i>
+                      </a>
+                      <a href="javascript:;" class="btn btn-info btn-sm" data-toggle="tooltip"
+                        data-original-title="Edit user" title="Güncelle" data-bs-toggle="modal" data-bs-target="#companyUpdateModal"
+                        (click)="getCompany(company.id)">
+                        <i class="material-icons opacity-10">edit</i>
+                      </a>
+                    </td>
+
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<swal #changeStatusCompany title="Emin misiniz?" text="İlgili şirketi aktif <==> pasif yapmak istiyor musunuz?."
+  type="question" [showCancelButton]="true" [focusCancel]="true"
+  [swalOptions]="{confirmButtonText:'Durumu değiştir',cancelButtonText:'Vazgeç'}">
+</swal>
+
+<!-- Add Modal -->
+<div class="modal fade" id="companyAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Kullanıcı ekle</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="addForm">
+          <div [class]="styleInputChange(name)">
+            <label class="form-label">Şirket Adı</label>
+            <input type="text" formControlName="name" [(ngModel)]="name" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(address)">
+            <label class="form-label">Şirket Adresi</label>
+            <input type="text" formControlName="address" [(ngModel)]="address" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxDepartment)">
+            <label class="form-label">Vergi Dairesi</label>
+            <input type="text" formControlName="taxDepartment" [(ngModel)]="taxDepartment" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxIdNumber)">
+            <label class="form-label">Vergi No</label>
+            <input type="text" formControlName="taxIdNumber" [(ngModel)]="taxIdNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(identityNumber)">
+            <label class="form-label">T.C No</label>
+            <input type="text" formControlName="identityNumber" [(ngModel)]="identityNumber" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="add()" data-bs-dismiss="modal">Ekle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeModal" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="companyUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Kullanıcı ekle</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="updateForm">
+          <div [class]="styleInputChange(name)">
+            <label class="form-label">Şirket Adı</label>
+            <input type="text" formControlName="name" [(ngModel)]="name" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(address)">
+            <label class="form-label">Şirket Adresi</label>
+            <input type="text" formControlName="address" [(ngModel)]="address" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxDepartment)">
+            <label class="form-label">Vergi Dairesi</label>
+            <input type="text" formControlName="taxDepartment" [(ngModel)]="taxDepartment" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(taxIdNumber)">
+            <label class="form-label">Vergi No</label>
+            <input type="text" formControlName="taxIdNumber" [(ngModel)]="taxIdNumber" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(identityNumber)">
+            <label class="form-label">T.C No</label>
+            <input type="text" formControlName="identityNumber" [(ngModel)]="identityNumber" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="update()" data-bs-dismiss="modal">Ekle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeModal" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
