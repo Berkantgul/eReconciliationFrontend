@@ -6,9 +6,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CurrencyAccount } from 'src/app/models/currencyAccount';
 import { UserOperationClaim } from 'src/app/models/userOperationClaimModel';
+import { UserThemeModel } from 'src/app/models/userThemeModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrencyAccountService } from 'src/app/services/currency-account.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
+import { UserService } from 'src/app/services/user.service';
 import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-currency-account',
@@ -53,6 +55,14 @@ export class CurrencyAccountComponent implements OnInit {
   email: string = "";
   authorized: string = "";
 
+  // UserTheme
+  userThemeOption: UserThemeModel = {
+    id: 0,
+    sidenavColor: "primary",
+    sidenavType: "dark",
+    userId: 0
+  }
+
   constructor(
     private currencyAccountService: CurrencyAccountService,
     private authService: AuthService,
@@ -60,7 +70,8 @@ export class CurrencyAccountComponent implements OnInit {
     private toastr: ToastrService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private userOperationClaimService: UserOperationClaimService
+    private userOperationClaimService: UserOperationClaimService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +80,7 @@ export class CurrencyAccountComponent implements OnInit {
     this.getList();
     this.createAddForm();
     this.createUpdateForm();
+    this.getUserTheme();
   }
 
 
@@ -299,6 +311,18 @@ export class CurrencyAccountComponent implements OnInit {
       console.log(res.data);
     }, (err) => {
       console.log(err.error);
+    })
+  }
+
+  getUserTheme() {
+    this.spinner.show()
+    this.userService.getUserTheme(this.userId).subscribe((res) => {
+      this.spinner.hide()
+      this.userThemeOption = res.data
+
+    },(err)=>{
+      this.spinner.hide()
+      this.toastr.error("Bir hata ile karşılaştık. Daha sonra tekrar deneyin.")
     })
   }
 }

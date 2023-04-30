@@ -11,6 +11,7 @@ import { TokenModel } from '../models/tokenModel';
 import { UserDto } from '../models/userDto';
 import { AdminCompaniesForUserDto } from '../models/dtos/adminCompaniesForUserDto';
 import { CompanyModel } from '../models/companyModel';
+import { UserThemeModel } from '../models/userThemeModel';
 
 @Injectable({
   providedIn: 'root'
@@ -91,4 +92,15 @@ export class UserService {
     let api = this.apiUrl + "user/addUserCompany?userId=" + userId + "&companyId=" + companyId;
     return this.httpClient.get<ResponseModel>(api);
   }
+
+  getUserTheme(userId: string): Observable<SingleResponseModel<UserThemeModel>> {
+    let api = this.apiUrl + "user/getUserTheme?userId=" + userId;
+    return this.httpClient.get<SingleResponseModel<UserThemeModel>>(api);
+  }
+
+  changeTheme(userTheme: UserThemeModel): Observable<ResponseModel> {
+    let api = this.apiUrl + "user/changeTheme";
+    return this.httpClient.post<ResponseModel>(api, userTheme);
+  }
+
 }

@@ -4,9 +4,11 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { UserOperationClaim } from 'src/app/models/userOperationClaimModel';
+import { UserThemeModel } from 'src/app/models/userThemeModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrencyAccountService } from 'src/app/services/currency-account.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -34,6 +36,14 @@ export class SidenavComponent implements OnInit {
   accountReconciliation: boolean = false;
   baBsReconciliation: boolean = false;
 
+  // UserTheme
+  userThemeOption: UserThemeModel = {
+    id: 0,
+    sidenavColor: "primary",
+    sidenavType: "dark",
+    userId: 0
+  }
+
   userOperationClaim: UserOperationClaim[] = [];
 
   constructor(
@@ -41,13 +51,15 @@ export class SidenavComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private userOperationClaimService: UserOperationClaimService
+    private userOperationClaimService: UserOperationClaimService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.refresh();
     this.userOperationClaimGetList();
+    this.getUserTheme()
   }
 
   refresh() {
@@ -64,6 +76,17 @@ export class SidenavComponent implements OnInit {
 
   }
 
+  getUserTheme() {
+    this.spinner.show()
+    this.userService.getUserTheme(this.userId).subscribe((res) => {
+      this.spinner.hide()
+      this.userThemeOption = res.data
+    },(err)=>{
+      this.spinner.hide()
+      this.toastr.error("Bir hata ile karşılaştık, Daha sonra tekrar deneyin.")
+    })
+  }
+
   logout() {
     localStorage.removeItem("token");
     this.toastr.warning("Başarılı bir şekilde çıkış yaptınız");
@@ -74,7 +97,7 @@ export class SidenavComponent implements OnInit {
   changeClass(url: string) {
     this.currentUrl = this.router.routerState.snapshot.url;
     if (url == this.currentUrl) {
-      return "nav-link text-white active bg-gradient-primary";
+      return "nav-link text-white active bg-gradient-" + this.userThemeOption.sidenavColor;
     }
     else {
       return "nav-link text-white";

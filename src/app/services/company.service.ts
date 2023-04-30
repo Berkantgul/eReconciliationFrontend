@@ -42,4 +42,6 @@ export class CompanyService {
     return this.httpClient.put<ResponseModel>(api, company);
   }
 
+  
+
 }

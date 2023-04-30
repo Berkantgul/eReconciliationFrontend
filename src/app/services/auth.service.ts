@@ -7,6 +7,7 @@ import { RegisterDto } from '../models/dtos/registerDto';
 import { TermsAndConditions } from '../models/termsAndConditions';
 import { ResponseModel } from '../models/responseModel';
 import { ChangePasswordDto } from '../models/dtos/changePasswordDto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,10 @@ export class AuthService {
   changePasswordToForgotPassword(changePasswordDto: ChangePasswordDto) {
     let api = this.apiUrl + "auth/ChangePasswordToForgotPassword";
     return this.httpClient.post<ResponseModel>(api, changePasswordDto);
+  }
+
+  changeCompany(userId: string, companyId: number) :Observable<SingleResponseModel<TokenModel>>{
+    let api = this.apiUrl + "auth/changeCompany?userId=" + userId + "&companyId=" + companyId;
+    return this.httpClient.get<SingleResponseModel<TokenModel>>(api);
   }
 }

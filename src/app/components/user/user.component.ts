@@ -7,6 +7,7 @@ import { AdminCompaniesForUserDto } from 'src/app/models/dtos/adminCompaniesForU
 import { UserReletionShipDto } from 'src/app/models/dtos/userReletionShipDto';
 import { UserSecondRegisterDto } from 'src/app/models/dtos/userSecondRegisterDto';
 import { UserDto } from 'src/app/models/userDto';
+import { UserThemeModel } from 'src/app/models/userThemeModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -53,6 +54,14 @@ export class UserComponent implements OnInit {
 
   userSecondRegisterDto: UserSecondRegisterDto
 
+  // UserTheme
+  userThemeOption: UserThemeModel = {
+    id: 0,
+    sidenavColor: "primary",
+    sidenavType: "dark",
+    userId: 0
+  }
+
   constructor(
     private spinner: NgxSpinnerService,
     private authService: AuthService,
@@ -68,6 +77,7 @@ export class UserComponent implements OnInit {
     this.createAddForm()
     this.createUpdateForm()
     this.getAdminUsersList()
+    this.getUserTheme()
   }
 
   refresh() {
@@ -302,6 +312,17 @@ export class UserComponent implements OnInit {
     }, (err) => {
       this.spinner.hide()
       this.toastr.error("Bir hata ile karşılaştık. Biraz sonra tekrar deneyin.")
+    })
+  }
+
+  getUserTheme() {
+    this.spinner.show()
+    this.userService.getUserTheme(this.userId).subscribe((res) => {
+      this.spinner.hide()
+      this.userThemeOption = res.data
+    },(err)=>{
+      this.spinner.hide()
+      this.toastr.error("Bir hata ile karşılaştık. Daha sonra tekrar deneyin")
     })
   }
 }

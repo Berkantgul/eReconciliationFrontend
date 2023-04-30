@@ -6,9 +6,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyModel } from 'src/app/models/companyModel';
 import { UserOperationClaim } from 'src/app/models/userOperationClaimModel';
+import { UserThemeModel } from 'src/app/models/userThemeModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { CompanyService } from 'src/app/services/company.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-company',
@@ -54,6 +56,13 @@ export class CompanyComponent implements OnInit {
   taxIdNumber: string = ""
   identityNumber: string = ""
 
+  userThemeOption: UserThemeModel = {
+    id: 0,
+    sidenavColor: "primary",
+    userId: 0,
+    sidenavType: "dark"
+  }
+
   company: CompanyModel
 
   constructor(
@@ -63,7 +72,8 @@ export class CompanyComponent implements OnInit {
     private toastr: ToastrService,
     private userOperationClaimService: UserOperationClaimService,
     private formBuilder: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private userService: UserService
 
   ) { }
 
@@ -73,6 +83,7 @@ export class CompanyComponent implements OnInit {
     this.userOperationClaimGetList()
     this.createAddForm()
     this.createUpdateForm()
+    this.getUserTheme()
   }
 
   refresh() {
@@ -229,7 +240,7 @@ export class CompanyComponent implements OnInit {
       this.updateForm.controls["taxDepartment"].setValue(res.data.taxDepartment)
       this.updateForm.controls["taxIdNumber"].setValue(res.data.taxIdNumber)
       this.updateForm.controls["identityNumber"].setValue(res.data.identityNumber)
-    },(err)=>{
+    }, (err) => {
 
     })
   }
@@ -259,7 +270,7 @@ export class CompanyComponent implements OnInit {
       let company = Object.assign({}, this.updateForm.value)
       this.spinner.show()
 
-      this.companyService.updateCompany(company).subscribe((res)=>{
+      this.companyService.updateCompany(company).subscribe((res) => {
         this.spinner.hide()
         this.toastr.info(res.message)
         this.getCompanyByUserId()
@@ -276,5 +287,18 @@ export class CompanyComponent implements OnInit {
     } else {
       return "input-group input-group-outline is-invalid my-3";
     }
+  }
+
+  getUserTheme() {
+    this.spinner.show()
+    this.userService.getUserTheme(this.userId).subscribe((res) => {
+      this.spinner.hide()
+      this.userThemeOption = res.data
+      console.log(this.userThemeOption.sidenavType)
+    },(err)=>{
+      this.spinner.hide()
+      this.toastr.error("Bir hata ile karşılaştık. Daha sonra tekrar deneyin.")
+      console.log(err)
+    })
   }
 }
