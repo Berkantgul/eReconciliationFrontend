@@ -69,7 +69,8 @@
     </li>
     <!-- Mail Parametreleri -->
     <li class="nav-item" *ngIf="mailParameter">
-      <a class="nav-link text-white " href="../pages/sign-up.html">
+      <a class="nav-link text-white " href="../pages/sign-up.html" data-bs-toggle="modal"
+      data-bs-target="#mailParameterModal" (click)="getById()">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">alternate_email</i>
         </div>
@@ -91,5 +92,51 @@
   <div class="mx-3">
     <a class="btn bg-gradient-primary mt-4 w-100" href="#" (click)="logout()" type="button"><i
         class="material-icons opacity-10">exit_to_app</i> Çıkış Yap</a>
+  </div>
+</div>
+
+
+ <!-- MailParameter Modal -->
+<div class="modal fade" id="mailParameterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Mail Parametreleri</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="updateForm">
+          <div [class]="styleInputChange(email)">
+            <label class="form-label">Email</label>
+            <input type="text" formControlName="email" [(ngModel)]="email" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(password)">
+            <label class="form-label">Password</label>
+            <input type="text" formControlName="password" [(ngModel)]="password" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(smtp)">
+            <label class="form-label">Smtp</label>
+            <input type="text" formControlName="smtp" [(ngModel)]="smtp" class="form-control" />
+          </div>
+          <div [class]="styleInputChange(port)">
+            <label class="form-label">Port</label>
+            <input type="number" formControlName="port" [(ngModel)]="port" class="form-control" />
+          </div>
+          <div class="form-check form-switch d-flex align-items-center mb-3">
+            <input class="form-check-input" type="checkbox" id="ssl" formControlName="ssl" checked>
+            <label class="form-check-label mb-0 ms-2" for="ssl">SSL</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-info" (click)="update()"
+          data-bs-dismiss="modal">Güncelle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeMailParameterModal"
+          data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,6 +8,7 @@ import { UserOperationClaim } from 'src/app/models/userOperationClaimModel';
 import { UserThemeModel } from 'src/app/models/userThemeModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrencyAccountService } from 'src/app/services/currency-account.service';
+import { MailparameterService } from 'src/app/services/mailparameter.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -46,13 +48,24 @@ export class SidenavComponent implements OnInit {
 
   userOperationClaim: UserOperationClaim[] = [];
 
+  updateForm: FormGroup
+
+
+  email: string = ""
+  password: string = ""
+  port: string = ""
+  smtp: string = ""
+  ssl: string = ""
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private userOperationClaimService: UserOperationClaimService,
-    private userService: UserService
+    private userService: UserService,
+    private mailParameterService: MailparameterService,
+    private formBuilder: FormBuilder,
+
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +73,7 @@ export class SidenavComponent implements OnInit {
     this.refresh();
     this.userOperationClaimGetList();
     this.getUserTheme()
+    this.createUpdateForm()
   }
 
   refresh() {
@@ -81,7 +95,7 @@ export class SidenavComponent implements OnInit {
     this.userService.getUserTheme(this.userId).subscribe((res) => {
       this.spinner.hide()
       this.userThemeOption = res.data
-    },(err)=>{
+    }, (err) => {
       this.spinner.hide()
       this.toastr.error("Bir hata ile karşılaştık, Daha sonra tekrar deneyin.")
     })
@@ -146,6 +160,61 @@ export class SidenavComponent implements OnInit {
     })
   }
 
+  createUpdateForm() {
+    this.updateForm = this.formBuilder.group({
+      id: [0, Validators.required],
+      email: ["", Validators.required],
+      password: [""],
+      companyId: [this.companyId, Validators.required],
+      smtp: ["", Validators.required],
+      port: [0, Validators.required],
+      ssl: [false, Validators.required]
+    })
+  }
+
+  getById() {
+    this.spinner.show()
+    this.mailParameterService.getById(this.companyId).subscribe((res) => {
+      if (res.data != null) {
+        this.updateForm.controls["id"].setValue(res.data.id)
+        this.updateForm.controls["companyId"].setValue(res.data.companyId)
+        this.updateForm.controls["email"].setValue(res.data.email)
+        this.updateForm.controls["password"].setValue(res.data.password)
+        this.updateForm.controls["smtp"].setValue(res.data.smtp)
+        this.updateForm.controls["port"].setValue(res.data.port)
+        this.updateForm.controls["ssl"].setValue(res.data.ssl)
+      }
+      this.spinner.hide()
+      console.log(this.updateForm)
+    })
+  }
+
+  styleInputChange(text: string) {
+    if (text != "") {
+      return "input-group input-group-outline is-valid my-3";
+    } else {
+      return "input-group input-group-outline is-invalid my-3";
+    }
+  }
+
+  update() {
+    this.spinner.show()
+    if (this.updateForm.valid) {
+      let mailParameter = Object.assign({}, this.updateForm.value);
+      console.log(mailParameter)
+      this.mailParameterService.update(mailParameter).subscribe((res) => {
+        this.spinner.hide();
+        this.toastr.warning(res.message, "Güncellendi");
+        document.getElementById("closeMailParameterModal").click();
+      }, (err) => {
+        this.spinner.hide();
+        this.toastr.error(err.error, "Hata")
+      })
+    } else {
+      this.spinner.hide();
+      this.toastr.error("Gerekli alanları doldurun!")
+    }
+  }
 }
 
 // nav-link text-white active bg-gradient-primary
